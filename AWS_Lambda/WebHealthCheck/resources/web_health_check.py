@@ -4,6 +4,7 @@ import json
 
 urls = ['www.skipq.org', 'www.google.com', 'www.umt.edu.pk', 'www.amazon.com']
 
+# lamda_handler is the entry point for AWS Lambda. Check 4 URLs and return the results
 def lambda_handler(event, context):
     values = dict()
     availability = []
@@ -14,6 +15,7 @@ def lambda_handler(event, context):
     values.update({'availability': availability, 'latency': latency})
     return json.dumps(values, default=str)
 
+# getAvailability returns the availability of a URL
 def getAvailability(url):
     http = urllib3.PoolManager()
     response = http.request('GET', url)
@@ -22,6 +24,7 @@ def getAvailability(url):
     else:
         return 0.0
     
+# getLatency returns the latency of a URL
 def getLatency(url):
     http = urllib3.PoolManager()
     start = datetime.datetime.now()
