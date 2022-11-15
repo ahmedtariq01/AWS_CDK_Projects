@@ -1,8 +1,6 @@
+# AWS Lambda Hello World CDK Pyhton Project
 
-# Welcome to your CDK Python project!
-
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`hello_world_stack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+This project demonstrates a CDK app with an instance of a stack (`hello_world_stack`). A simple Lambda Function that prints 'Hello World'.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
@@ -60,6 +58,8 @@ command.
  * `cdk synth`       emits the synthesized CloudFormation template
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+ * `cdk docs`        open CDK 
+ 
+ ## Useful links
 
-Enjoy!
+ - AWS Lambda: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/README.html

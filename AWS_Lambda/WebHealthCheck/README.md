@@ -1,16 +1,14 @@
+# AWS Lambda Webapp Healthcheck CDK Pyhton Project
 
-# Welcome to your CDK Python project!
-
-This is a blank project for CDK development with Python.
+This project demonstrates a CDK app with an instance of a stack (`web_health_check_stack`). This projects creates a Lambda Function that checks the availability and latency of the websites. Also, Convert the lambda function into a cron job on 60 min intervals.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+This project is set up like a standard Python project.  The initialization process also creates
+a virtualenv within this project, stored under the .venv directory.  To create the virtualenv
+it assumes that there is a `python3` executable in your path with access to the `venv` package.
+If for any reason the automatic creation of the virtualenv fails, you can create the virtualenv
+manually once the init process completes.
 
 To manually create a virtualenv on MacOS and Linux:
 
@@ -43,8 +41,15 @@ At this point you can now synthesize the CloudFormation template for this code.
 $ cdk synth
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
+You can now begin exploring the source code, contained in the hello directory.
+There is also a very trivial test included that can be run like this:
+
+```
+$ pytest
+```
+
+To add additional dependencies, for example other CDK libraries, just add to
+your requirements.txt file and rerun the `pip install -r requirements.txt`
 command.
 
 ## Useful commands
@@ -53,6 +58,10 @@ command.
  * `cdk synth`       emits the synthesized CloudFormation template
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+ * `cdk docs`        open CDK 
+ 
+ ## Useful links
 
-Enjoy!
+ - AWS Lambda: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/README.html
+ - AWS Events: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_events/README.html
+ - AWS Events Targets: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_events_targets/README.html
