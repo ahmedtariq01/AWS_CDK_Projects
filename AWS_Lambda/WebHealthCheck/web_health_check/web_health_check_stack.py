@@ -30,7 +30,7 @@ class WebHealthCheckStack(Stack):
             schedule = schedule,
             targets = targets
         )
-
+ 
         # destroy the rule when the stack is destroyed
         rule.apply_removal_policy(RemovalPolicy.DESTROY)
 
