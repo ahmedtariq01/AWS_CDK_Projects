@@ -2,14 +2,15 @@
 
 This project demonstrates a CDK app with an instance of a stack (`web_health_check_stack`). This projects creates a Lambda Function that checks the availability and latency of the websites. Also, Convert the lambda function into a cron job on 60 min intervals.
 
-## Architecture Diagram
+## Architecture Diagram:
 
 <div align="center">
-<h1>AWS lambda Architeture Diagram</h1>
    <div align="center">
     <img src="Architecture_Diagram/AWS_Lambda_HealthCheck_CornJob.jpg" width='700'/>
   </div>
 </div>
+</br>
+
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
