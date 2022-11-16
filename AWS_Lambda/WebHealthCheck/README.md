@@ -1,6 +1,6 @@
 # AWS Lambda Webapp Healthcheck CDK Pyhton Project
 
-This project demonstrates a CDK app with an instance of a stack (`web_health_check_stack`). This projects creates a Lambda Function that checks the availability and latency of the websites. Also, Convert the lambda function into a cron job on 60 min intervals.
+This project demonstrates a CDK app with an instance of a stack (`web_health_check_stack`). This projects creates a Lambda Function that checks the `availability` and `latency` of the websites. Also, Convert the lambda function into a cron job on 60 min intervals. The `boto3` will be used to create the CloudWatch metrics and alarm.
 
 ## Architecture Diagram:
 
@@ -75,3 +75,5 @@ command.
  - AWS Lambda: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/README.html
  - AWS Events: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_events/README.html
  - AWS Events Targets: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_events_targets/README.html
+-  Boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+-  Boto3 CloudWatch: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html
