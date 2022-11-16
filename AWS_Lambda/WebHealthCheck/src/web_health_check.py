@@ -1,18 +1,29 @@
 import urllib3
 import datetime
 import json
+from cloudwatch_metricdata import AWSCloudWatch
+import constants as const
 
-urls = ['www.skipq.org', 'www.google.com', 'www.umt.edu.pk', 'www.amazon.com']
-
-# lamda_handler is the entry point for AWS Lambda. Check 4 URLs and return the results
+# lambda_handler is the entry point for AWS Lambda. Check 4 URLs and return the results
 def lambda_handler(event, context):
+    # creating cloudwatch object to put the metric data
+    cloudwatch_obj = AWSCloudWatch()
     values = dict()
     availability = []
     latency = []
-    for url in urls:
+    
+    # check the availability and latency of the URLs
+    for url in const.urls:
         availability.append(getAvailability(url))
         latency.append(getLatency(url))
+        
     values.update({'availability': availability, 'latency': latency})
+        
+    # sending the metric data to AWS CloudWatch
+    dimensions = [{'Name': 'URls', 'Value': const.urls}]
+    cloudwatch_obj.cloudwatch_metric_data(const.namespace, const.availability_metric, dimensions, availability)
+    cloudwatch_obj.cloudwatch_metric_data(const.namespace, const.latency_metric, dimensions, latency)
+    
     return json.dumps(values, default=str)
 
 # getAvailability returns the availability of a URL
@@ -32,4 +43,6 @@ def getLatency(url):
     end = datetime.datetime.now()
     latency = round((end - start).microseconds * .000001,6)
     return latency
+    
+    
     
