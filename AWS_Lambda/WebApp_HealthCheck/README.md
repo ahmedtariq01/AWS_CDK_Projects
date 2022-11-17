@@ -81,4 +81,9 @@ command.
  - AWS CloudWatch Alarm: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_cloudwatch/Alarm.html
  - Boto3: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
  - Boto3 CloudWatch: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cloudwatch.html
- 
+ - AWS SNS: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_sns/README.html
+ - AWS SNS Subscriptions: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_sns_subscriptions.html
+ - AWS SNS Topic: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_sns/Topic.html
+ - AWS SNS Email subscription : https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_sns_subscriptions/EmailSubscription.html
+ - AWS CloudWatch Actions: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_cloudwatch_actions.html
+ - AWS CloudWatch SNSAction: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_cloudwatch_actions/SnsAction.html

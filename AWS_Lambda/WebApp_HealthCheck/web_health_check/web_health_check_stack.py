@@ -7,6 +7,10 @@ from aws_cdk import (
     RemovalPolicy,
     aws_cloudwatch as cloudwatch_,
     aws_iam as iam_,
+    aws_sns as sns_,
+    aws_sns_subscriptions as subscriptions_,
+    aws_cloudwatch_actions as cw_actions_,
+    
 )
 from constructs import Construct
 from src import constants as const
@@ -33,12 +37,18 @@ class WebHealthCheckStack(Stack):
         
         # corn job rule to trigger the lambda function
         rule = events_.Rule(self, "WebHealthRule",
+            description="Rule to generate the auto events for  Web Health Check",
             schedule = schedule,
             targets = [targets]
         )
  
         # destroy the rule when the stack is destroyed
         rule.apply_removal_policy(RemovalPolicy.DESTROY)
+        
+        # creating an SNS topic
+        my_topic = sns_.Topic(self, "Health cHeck Notification")
+        my_topic.add_subscription(subscriptions_.EmailSubscription("ahmed.tariq.skipq@gmail.com"))
+        
         
         # creating the cloud Watch alarm for the availability metric
         dimensions = {'URls': str(url) for url in const.urls}
@@ -56,6 +66,10 @@ class WebHealthCheckStack(Stack):
         
         )
         
+        # adding the SNS action to the alarm
+        avaiilability_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
+        
+        
         # creating the cloud Watch alarm for the latency metric
         dimensions = {'URls': str(url) for url in const.urls}
         
@@ -71,6 +85,10 @@ class WebHealthCheckStack(Stack):
             comparison_operator=cloudwatch_.ComparisonOperator.GREATER_THAN_THRESHOLD, 
         
         )
+        
+        # adding the SNS action to the alarm
+        latency_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
+    
 
     # creating a lambda function
     def create_lambda(self, id, asset, handler, role):
