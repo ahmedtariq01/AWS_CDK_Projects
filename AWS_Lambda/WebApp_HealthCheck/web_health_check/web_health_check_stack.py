@@ -47,7 +47,7 @@ class WebHealthCheckStack(Stack):
         
         # creating an SNS topic
         my_topic = sns_.Topic(self, "Health cHeck Notification")
-        my_topic.add_subscription(subscriptions_.EmailSubscription("ahmed.tariq.skipq@gmail.com"))
+        my_topic.add_subscription(subscriptions_.EmailSubscription("example@gmail.com"))
         
         
         # creating the cloud Watch alarm for the availability metric
@@ -108,6 +108,8 @@ class WebHealthCheckStack(Stack):
                 
             ])
         return lambdaRole
+    
+    
     
     
     
