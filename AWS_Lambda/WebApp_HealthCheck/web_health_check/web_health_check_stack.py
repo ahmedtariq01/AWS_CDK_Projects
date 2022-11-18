@@ -104,7 +104,7 @@ class WebHealthCheckStack(Stack):
             assumed_by=iam_.ServicePrincipal("lambda.amazonaws.com"),
             managed_policies=[
               iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),  
-              iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess"),
+              iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess")
                 
             ])
         return lambdaRole
