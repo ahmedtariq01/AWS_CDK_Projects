@@ -78,7 +78,9 @@ class WebHealthCheckStack(Stack):
         id = id,
         handler = handler,
         code = lambda_.Code.from_asset(asset),
-        runtime=lambda_.Runtime.PYTHON_3_9)
+        role = role,
+        runtime=lambda_.Runtime.PYTHON_3_9,
+        timeout=Duration.minutes(1))
 
     # creating a lambda role
     def create_lambda_role(self):
