@@ -39,7 +39,7 @@ class WebHealthCheckStack(Stack):
  
         # destroy the rule when the stack is destroyed
         rule.apply_removal_policy(RemovalPolicy.DESTROY)
-        
+
         # creating the cloud Watch alarm for the availability metric
         dimensions = {'URls': str(url) for url in const.urls}
         

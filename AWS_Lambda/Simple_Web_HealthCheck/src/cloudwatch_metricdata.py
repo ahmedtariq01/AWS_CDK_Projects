@@ -5,7 +5,7 @@ class AWSCloudWatch:
         self.client = boto3.client('cloudwatch')
 
     # putMetricData puts the metric data to AWS CloudWatch
-    def cloudwatch_metric_data(self, nampespace, metric_name, value, unit, dimensions):
+    def cloudwatch_metric_data(self, nampespace, metric_name, dimensions, value):
         response = self.client.put_metric_data(
                 Namespace=nampespace,
                 MetricData=[
