@@ -16,13 +16,13 @@ def lambda_handler(event, context):
         latency=getLatency(url)        
         
         # sending the metric data to AWS CloudWatch
-        dimensions = [{'Name': 'URls', 'Value': const.urls}]
+        dimensions = [{'Name': 'URls', 'Value': url}]
         cloudwatch_obj.cloudwatch_metric_data(const.namespace, const.availability_metric, dimensions, availability)
         cloudwatch_obj.cloudwatch_metric_data(const.namespace, const.latency_metric, dimensions, latency)
-        values.update({'availability': availability, 'latency': latency})
-         # values.update({ "Availability"+ str(url) : availability , "Latency"+str(url) : latency})
+        # values.update({'availability': availability, 'latency': latency})
+        values.update({ "Availability: "+ str(url) : availability , "Latency: "+str(url) : latency})
         
-    return json.dumps(values, default=str)
+    return values
 
 # getAvailability returns the availability of a URL
 def getAvailability(url):

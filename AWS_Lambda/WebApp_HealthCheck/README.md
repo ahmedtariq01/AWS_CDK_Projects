@@ -87,3 +87,7 @@ command.
  - AWS SNS Email subscription : https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_sns_subscriptions/EmailSubscription.html
  - AWS CloudWatch Actions: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_cloudwatch_actions.html
  - AWS CloudWatch SNSAction: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_cloudwatch_actions/SnsAction.html
+ - AWS DynamoDB: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_dynamodb.html
+ - AWS DynmoDB create table: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_dynamodb/Table.html
+ - Boto3 DynamoDB: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
+ - Boto3 DynamoDB create table: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.create_table

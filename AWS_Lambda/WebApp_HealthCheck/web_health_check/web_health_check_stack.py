@@ -10,6 +10,7 @@ from aws_cdk import (
     aws_sns as sns_,
     aws_sns_subscriptions as subscriptions_,
     aws_cloudwatch_actions as cw_actions_,
+    aws_dynamodb as dynamodb_, 
     
 )
 from constructs import Construct
@@ -26,6 +27,10 @@ class WebHealthCheckStack(Stack):
         # The code that defines your stack goes here
         fn = self.create_lambda('WebHealthCheck','./src','web_health_check.lambda_handler',lambda_role)
         
+        # DaynamoDB lambda function
+        db = self.create_lambda('DbLambda','./src','Db_Web_health_check.lambda_handler',lambda_role)
+        
+
         # destroy the lambda function when the stack is destroyed
         fn.apply_removal_policy(RemovalPolicy.DESTROY)
          
@@ -88,28 +93,42 @@ class WebHealthCheckStack(Stack):
         
         # adding the SNS action to the alarm
         latency_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
+        
+        # Calling the DynamoDB table
+        db_table = self.create_DynamoDB_table()
     
-
+                                   
     # creating a lambda function
     def create_lambda(self, id, asset, handler, role):
         return lambda_.Function(self,
         id = id,
         handler = handler,
         code = lambda_.Code.from_asset(asset),
-        runtime=lambda_.Runtime.PYTHON_3_9)
+        role = role,
+        runtime=lambda_.Runtime.PYTHON_3_9,
+        timeout=Duration.minutes(1))
 
     # creating a lambda role
     def create_lambda_role(self):
         lambdaRole = iam_.Role(self, "Lambda_Role",
             assumed_by=iam_.ServicePrincipal("lambda.amazonaws.com"),
-            managed_policies=[
-              iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),  
-              iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess")
-                
-            ])
+            managed_policies=[  
+                iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),
+                iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess"),
+                iam_.ManagedPolicy.from_aws_managed_policy_name("DynamoDBFullAccess")
+              
+            ]
+        )
         return lambdaRole
     
-    
+    # creating a DynamoDB table
+    def create_DynamoDB_table(self):
+        table = dynamodb_.Table(self, "AlarmTable",
+        partition_key=dynamodb_.Attribute(name="id", type=dynamodb_.AttributeType.STRING),
+        removal_policy=RemovalPolicy.DESTROY,
+        sort_key=dynamodb_.Attribute(name="timestamp", type=dynamodb_.AttributeType.STRING),
+        )
+        return table
     
     
     
