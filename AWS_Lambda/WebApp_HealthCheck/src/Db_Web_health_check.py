@@ -1,26 +1,14 @@
+from put_data import DynamoDB
+
 import boto3
+import os
 
-
-# class AWS_DYNAMODB:
-#     def __init__(self) -> None:
-#         self.client = boto3.client('dynamodb')
+def lambda_handler(event, context):
     
-# lambda_handler is the entry point for AWS Lambda. Check 4 URLs and return the results
-def lambda_handler( event, context):
-    client = boto3.client('dynamodb')
-    response = client.create_table(
-    AttributeDefinitions=[
-        {
-            'AttributeName': 'string',
-            'AttributeType': 'S'|'N'|'B'
-        },
-    ],
-    TableName='string',
-    KeySchema=[
-        {
-            'AttributeName': 'string',
-            'KeyType': 'HASH'|'RANGE'
-        },
-    ],)
-        
-        
+    client = boto3.client('dynamodb', region_name='us-east-2')
+    dbtable = os.environ('AlarmTable')
+    table = client.Table(dbtable)
+    message = event["Records"][0]["Sns"]["MessageId"]
+    time = event["Records"][0]["Sns"]["Timestamp"]
+    response = table.put_item(Item={"id": message, "timestamp": time})
+

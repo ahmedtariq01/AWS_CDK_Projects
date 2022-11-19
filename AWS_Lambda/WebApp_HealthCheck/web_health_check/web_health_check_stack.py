@@ -94,9 +94,14 @@ class WebHealthCheckStack(Stack):
         # adding the SNS action to the alarm
         latency_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
         
+         
         # Calling the DynamoDB table
         db_table = self.create_DynamoDB_table()
-    
+        # db_table.grant_read_write_data(db)
+        db_table.grant_full_access(db)
+        db.add_environment("AlarmTable", db_table.table_name)
+        my_topic.add_subscription(subscriptions_.LambdaSubscription(db))
+        
                                    
     # creating a lambda function
     def create_lambda(self, id, asset, handler, role):
@@ -115,7 +120,7 @@ class WebHealthCheckStack(Stack):
             managed_policies=[  
                 iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess"),
-                iam_.ManagedPolicy.from_aws_managed_policy_name("DynamoDBFullAccess")
+                iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonDynamoDBFullAccess")
               
             ]
         )
@@ -125,11 +130,13 @@ class WebHealthCheckStack(Stack):
     def create_DynamoDB_table(self):
         table = dynamodb_.Table(self, "AlarmTable",
         partition_key=dynamodb_.Attribute(name="id", type=dynamodb_.AttributeType.STRING),
-        removal_policy=RemovalPolicy.DESTROY,
         sort_key=dynamodb_.Attribute(name="timestamp", type=dynamodb_.AttributeType.STRING),
+        removal_policy=RemovalPolicy.DESTROY
         )
         return table
-    
+
+
+
     
     
     
