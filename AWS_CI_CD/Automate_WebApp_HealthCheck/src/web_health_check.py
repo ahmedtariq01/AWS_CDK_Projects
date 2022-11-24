@@ -1,6 +1,5 @@
 import urllib3
 import datetime
-import json
 from cloudwatch_metricdata import AWSCloudWatch
 import constants as const
 
