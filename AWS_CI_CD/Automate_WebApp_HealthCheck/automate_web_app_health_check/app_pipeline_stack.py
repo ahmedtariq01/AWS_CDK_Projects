@@ -67,9 +67,14 @@ class AppPipelineStack(Stack):
         # prod stage for pipeline
         prod_stage = AppPipelineStage(self, "Prod")
         
-        # adding prod stage to pipeline
+        # adding prod stage to pipeline and manual Approval Step
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.pipelines/AddStageOpts.html
-        pipeline.add_stage(prod_stage)
+        pipeline.add_stage(prod_stage, pre =[
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.pipelines/ManualApprovalStep.html
+        
+            pipelines_.ManualApprovalStep("ApproveProd")
+                                ]
+                    )
                                               
                                                        
     
