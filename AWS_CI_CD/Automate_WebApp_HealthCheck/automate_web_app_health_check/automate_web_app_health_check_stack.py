@@ -52,7 +52,7 @@ class AutomateWebAppHealthCheckStack(Stack):
         
         # creating an SNS topic
         my_topic = sns_.Topic(self, "Health cHeck Notification")
-        my_topic.add_subscription(subscriptions_.EmailSubscription("example@gmail.com"))
+        my_topic.add_subscription(subscriptions_.EmailSubscription("test@example.com"))
         
         
         # creating the cloud Watch alarm for the availability metric

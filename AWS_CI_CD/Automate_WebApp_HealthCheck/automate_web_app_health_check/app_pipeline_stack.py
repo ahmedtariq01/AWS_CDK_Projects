@@ -1,6 +1,5 @@
 from aws_cdk import (
     Stack,
-    aws_iam as iam_,
     pipelines as pipelines_,
     SecretValue as secret_,
     aws_codepipeline_actions as codepipeline_actions_,    
@@ -20,7 +19,7 @@ class AppPipelineStack(Stack):
         # Access the GitHub repository
         source = pipelines_.CodePipelineSource.git_hub("ahmedtariq01/AWS_Projects", "main",
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.core/SecretValue.html#aws_cdk.core.SecretValue
-                                                       authentication=secret_.secrets_manager("MyToken", json_field="my-key"),
+                                                       authentication=secret_.secrets_manager("MyToken", json_field="key-value"),
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codepipeline_actions/GitHubTrigger.html#aws_cdk.aws_codepipeline_actions.GitHubTrigger
                                                        trigger=codepipeline_actions_.GitHubTrigger('POLL')
                                                        )
@@ -43,14 +42,33 @@ class AppPipelineStack(Stack):
                                            synth=synth
                                            )
         
-        # stage for pipeline
+        
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.core/Stage.html
-        beta_stage = AppPipelineStage(self, "Beta")
+        # beta testing stage for pipeline
+        beta_testing_stage = AppPipelineStage(self, "Beta")
+        
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.pipelines/AddStageOpts.html
+        # adding beta testing stage to pipeline
+        pipeline.add_stage(beta_testing_stage, pre =[
+                                pipelines_.ShellStep("Synth", input=source, 
+                                commands=[  'cd AWS_CI_CD/Automate_WebApp_HealthCheck/',
+                                            'npm install -g aws-cdk',
+                                            "pip install -r requirements.txt",
+                                            "pip install -r requirements-dev.txt",
+                                            'pytest'],
+                                # primary_output_directory="AWS_CI_CD/Automate_WebApp_HealthCheck/cdk.out",
+                                )
+                            ]
+                        )
+        
+
+       
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.core/Stage.html
+        # prod stage for pipeline
         prod_stage = AppPipelineStage(self, "Prod")
         
-        # adding stage to pipeline
-        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.pipelines/README.html
-        pipeline.add_stage(beta_stage)
+        # adding prod stage to pipeline
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.pipelines/AddStageOpts.html
         pipeline.add_stage(prod_stage)
                                               
                                                        

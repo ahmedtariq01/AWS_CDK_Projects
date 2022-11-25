@@ -1,7 +1,5 @@
 from aws_cdk import (
     Stage,
-     
-    
 )
 
 from automate_web_app_health_check.automate_web_app_health_check_stack import AutomateWebAppHealthCheckStack 
