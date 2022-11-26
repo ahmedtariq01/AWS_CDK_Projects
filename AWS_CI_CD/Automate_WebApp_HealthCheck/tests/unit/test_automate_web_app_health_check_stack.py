@@ -49,7 +49,7 @@ def test_cloudwatch(app):
     app = app
     stack = AutomateWebAppHealthCheckStack(app, "automate-web-app-health-check")
     template = assertions.Template.from_stack(stack)
-    template.resource_count_is("AWS::CloudWatch::Alarm", 2)
+    template.resource_count_is("AWS::CloudWatch::Alarm", 4)
 
 # check the SNS subscriptions email
 def test_SNS_Subscription(app):
@@ -79,7 +79,7 @@ def test_lambda_policy(app):
     app = app
     stack = AutomateWebAppHealthCheckStack(app, "automate-web-app-health-check")
     template = assertions.Template.from_stack(stack)
-    template.resource_count_is("AWS::IAM::Policy", 1)
+    template.resource_count_is("AWS::IAM::Policy", 2)
     
 # check the cloudwatch metrics
 def test_cloudwatch_metrics(app):
@@ -95,7 +95,7 @@ def test_cloudwatch_metrics(app):
 # def test_lambda_handler_function():
 #     app = core.App()
 #     stack = AutomateWebAppHealthCheckStack(app, "automate-web-app-health-check")
-#     lambda_handler = stack.create_lambda
+#     lambda_handler = stack.lambda_handler
 #     assert lambda_handler is not None
 #     assert lambda_handler.function_name == "web_health_check"
 #   assert lambda_handler.runtime == lambda_.Runtime.PYTHON_3_8

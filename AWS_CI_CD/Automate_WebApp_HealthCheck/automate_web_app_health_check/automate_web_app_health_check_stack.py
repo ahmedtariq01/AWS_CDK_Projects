@@ -11,6 +11,7 @@ from aws_cdk import (
     aws_sns_subscriptions as subscriptions_,
     aws_cloudwatch_actions as cw_actions_,
     aws_dynamodb as dynamodb_, 
+    aws_codedeploy as codedeploy_,
     
 )
 from constructs import Construct
@@ -74,7 +75,6 @@ class AutomateWebAppHealthCheckStack(Stack):
         # adding the SNS action to the alarm
         avaiilability_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
         
-        
         # creating the cloud Watch alarm for the latency metric
         dimensions = {'URls': str(url) for url in const.urls}
         
@@ -94,7 +94,53 @@ class AutomateWebAppHealthCheckStack(Stack):
         # adding the SNS action to the alarm
         latency_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
         
-         
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/Function.html
+        # obtaining metrics from aws
+        # obtaining Duration metric
+        duration_metric = fn.metric_duration()
+        duration_alarm =  cloudwatch_.Alarm(self,"Duration_Error",
+            metric=duration_metric,
+            evaluation_periods=60,
+            threshold=1,
+            comparison_operator=cloudwatch_.ComparisonOperator.LESS_THAN_THRESHOLD, 
+        
+        )
+        
+        # obtaining invocations metric
+        invocations_metric = fn.metric_invocations()
+        invocations_alarm =  cloudwatch_.Alarm(self,"Invocations_Error",
+            metric=invocations_metric,
+            evaluation_periods=60,
+            threshold=1,
+            comparison_operator=cloudwatch_.ComparisonOperator.LESS_THAN_THRESHOLD, 
+        
+        )
+        
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/Alias.html#aws_cdk.aws_lambda.Alias
+        # version of the application
+        version = fn.current_version
+        alias = lambda_.Alias(self, "WebAppHealthCheckAlias",
+            alias_name="Prod",
+            version=version
+        )
+        
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codedeploy/LambdaDeploymentGroup.html
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codedeploy/ILambdaDeploymentConfig.html#aws_cdk.aws_codedeploy.ILambdaDeploymentConfig
+        # deployment group to Configure auto rollback if any of the metrics are in alarm
+        deployment_group = codedeploy_.LambdaDeploymentGroup(self, "BlueGreenDeployment",
+            alias=alias,
+            alarms=[duration_alarm,invocations_alarm],
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codedeploy/AutoRollbackConfig.html#aws_cdk.aws_codedeploy.AutoRollbackConfig
+            auto_rollback=codedeploy_.AutoRollbackConfig(  
+                                        failed_deployment=True,
+                                        stopped_deployment=True,
+                                        deployment_in_alarm=True
+            ),
+                
+        # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codedeploy/LambdaDeploymentConfig.html
+            deployment_config=codedeploy_.LambdaDeploymentConfig.CANARY_10_PERCENT_10_MINUTES
+        )
+        
         # Calling the DynamoDB table
         db_table = self.create_DynamoDB_table()
         # db_table.grant_read_write_data(db)
