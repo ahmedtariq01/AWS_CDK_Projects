@@ -8,7 +8,7 @@ For the `Automation of WebApp HealthCheck` a multi-stage pipeline having Beta an
 
 <div align="center">
    <div align="center">
-    <img src="Architecture_Diagram/AWS_Lambda_WebApp_HealthCheck.jpg" width='700'/>
+    <img src="Architecture_Diagram/Automate_WebApp_HealthCheck.jpg" width='700'/>
   </div>
 </div>
 </br>
