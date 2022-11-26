@@ -72,14 +72,14 @@ def test_lambda_role(app):
     app = app
     stack = AutomateWebAppHealthCheckStack(app, "automate-web-app-health-check")
     template = assertions.Template.from_stack(stack)
-    template.resource_count_is("AWS::IAM::Role", 1)
+    template.resource_count_is("AWS::IAM::Role", 2)
     
 # check the IAM policies created for lambda
 def test_lambda_policy(app):
     app = app
     stack = AutomateWebAppHealthCheckStack(app, "automate-web-app-health-check")
     template = assertions.Template.from_stack(stack)
-    template.resource_count_is("AWS::IAM::Policy", 2)
+    template.resource_count_is("AWS::IAM::Policy", 1)
     
 # check the cloudwatch metrics
 def test_cloudwatch_metrics(app):
