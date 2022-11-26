@@ -19,7 +19,7 @@ class AppPipelineStack(Stack):
         # Access the GitHub repository
         source = pipelines_.CodePipelineSource.git_hub("ahmedtariq01/AWS_Projects", "main",
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.core/SecretValue.html#aws_cdk.core.SecretValue
-                                                       authentication=secret_.secrets_manager("ahmedtsecret", json_field="pipelinesecret"),
+                                                       authentication=secret_.secrets_manager("My-Token", json_field="Key-name"),
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codepipeline_actions/GitHubTrigger.html#aws_cdk.aws_codepipeline_actions.GitHubTrigger
                                                        trigger=codepipeline_actions_.GitHubTrigger('POLL')
                                                        )
