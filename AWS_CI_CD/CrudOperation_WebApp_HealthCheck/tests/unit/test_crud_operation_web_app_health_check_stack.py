@@ -17,7 +17,7 @@ def app():
 # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.assertions/Template.html
 # check wheteher lambda is created or not
 def test_lambda(app):
-    app.resource_count_is("AWS::Lambda::Function", 2)
+    app.resource_count_is("AWS::Lambda::Function", 3)
    
 # Check whether SNS is created or not
 def test_sns(app):
@@ -32,7 +32,7 @@ def test_lambda_handler(app):
 
 # Check whether DB table is created or not 
 def test_dynamodb(app):
-    app.resource_count_is("AWS::DynamoDB::Table", 1)
+    app.resource_count_is("AWS::DynamoDB::Table", 2)
     
 # check the number of alarms created in CloudWatch
 def test_cloudwatch(app):
@@ -50,7 +50,7 @@ def test_cloudwatch_rule(app):
     
 # check the IAM role created for lambda
 def test_lambda_role(app):
-    app.resource_count_is("AWS::IAM::Role", 2)
+    app.resource_count_is("AWS::IAM::Role", 3)
     
 # check the IAM policies created for lambda
 def test_lambda_policy(app):
