@@ -12,6 +12,7 @@ from aws_cdk import (
     aws_cloudwatch_actions as cw_actions_,
     aws_dynamodb as dynamodb_, 
     aws_codedeploy as codedeploy_,
+    aws_apigateway as apigateway_,
 )
 
 from constructs import Construct
@@ -29,6 +30,9 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         
         # DaynamoDB lambda function
         db = self.create_lambda('DbLambda','./src','Db_Web_health_check.lambda_handler',lambda_role)
+        
+        # Api lambda function
+        apifn = self.create_lambda('APILambda','./src','api_lambda.lambda_handler',lambda_role)
         
 
         # destroy the lambda function when the stack is destroyed
@@ -101,7 +105,9 @@ class CrudOperationWebAppHealthCheckStack(Stack):
             metric=duration_metric,
             evaluation_periods=60,
             threshold=1,
-            comparison_operator=cloudwatch_.ComparisonOperator.LESS_THAN_THRESHOLD, 
+            datapoints_to_alarm=60,
+            comparison_operator=cloudwatch_.ComparisonOperator.GREATER_THAN_THRESHOLD, 
+            treat_missing_data=cloudwatch_.TreatMissingData.NOT_BREACHING
         
         )
         
@@ -111,8 +117,9 @@ class CrudOperationWebAppHealthCheckStack(Stack):
             metric=invocations_metric,
             evaluation_periods=60,
             threshold=1,
-            comparison_operator=cloudwatch_.ComparisonOperator.LESS_THAN_THRESHOLD, 
-        
+            datapoints_to_alarm=60,
+            comparison_operator=cloudwatch_.ComparisonOperator.GREATER_THAN_THRESHOLD, 
+            treat_missing_data=cloudwatch_.TreatMissingData.NOT_BREACHING
         )
         
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/Alias.html#aws_cdk.aws_lambda.Alias
@@ -147,6 +154,42 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         db.add_environment("AlarmTable", db_table.table_name)
         my_topic.add_subscription(subscriptions_.LambdaSubscription(db))
         
+        
+        # Calling the API DynamoDB table
+        API_table = self.Api_DynamoDB_table()
+        API_table.grant_full_access(apifn)
+        apifn.add_environment("ApITable", API_table.table_name)
+        
+        # create REST API Gateway integrated with APILambda
+        # https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_apigateway/LambdaRestApi.html
+        api = apigateway_.LambdaRestApi(self, id = "AhmedTariqAPI",
+                handler = apifn,
+                proxy=False,
+                endpoint_configuration= apigateway_.EndpointConfiguration(
+                    types= [apigateway_.EndpointType.REGIONAL]
+                )
+            )
+        
+        
+        # add resource and method
+        # https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_apigateway/Resource.html
+        # https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_apigateway/IResource.html#aws_cdk.aws_apigateway
+        # path to resource
+        items = api.root.add_resource("items")
+        
+        # POST: (Create) /items        
+        items.add_method("POST")
+        
+        # GET: (Read) /items
+        items.add_method("GET")
+        
+        # DELETE: /items
+        items.add_method("DELETE")
+        
+        #PUT: (Update) /items
+        items.add_method("PUT")
+
+        
                                    
     # creating a lambda function
     def create_lambda(self, id, asset, handler, role):
@@ -165,7 +208,8 @@ class CrudOperationWebAppHealthCheckStack(Stack):
             managed_policies=[  
                 iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess"),
-                iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonDynamoDBFullAccess")
+                iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonDynamoDBFullAccess"),
+                iam_.ManagedPolicy.from_aws_managed_policy_name("APIGatewayFullAccess"),
               
             ]
         )
@@ -179,5 +223,19 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         removal_policy=RemovalPolicy.DESTROY
         )
         return table
+    
+    #  creating a DynamoDB table for API Gateway
+    def Api_DynamoDB_table(self):
+        table = dynamodb_.Table(self, "APITable",
+        partition_key=dynamodb_.Attribute(name="id", type=dynamodb_.AttributeType.STRING),
+        removal_policy=RemovalPolicy.DESTROY,
+        sort_key=dynamodb_.Attribute(name="timestamp", type=dynamodb_.AttributeType.STRING),
+        )
+        return table
 
         
+
+
+
+
+
