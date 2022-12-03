@@ -160,6 +160,9 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         API_table.grant_full_access(apifn)
         apifn.add_environment("ApITable", API_table.table_name)
         
+        # invoking the lambda function
+        apifn.grant_invoke(iam_.ServicePrincipal("apigateway.amazonaws.com"))
+        
         # create REST API Gateway integrated with APILambda
         # https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_apigateway/LambdaRestApi.html
         api = apigateway_.LambdaRestApi(self, id = "AhmedTariqAPI",
@@ -169,7 +172,6 @@ class CrudOperationWebAppHealthCheckStack(Stack):
                     types= [apigateway_.EndpointType.REGIONAL]
                 )
             )
-        
         
         # add resource and method
         # https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_apigateway/Resource.html
