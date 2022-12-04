@@ -19,7 +19,7 @@ class AppPipelineStack(Stack):
         # Access the GitHub repository
         source = pipelines_.CodePipelineSource.git_hub("ahmedtariq01/AWS_Projects", "main",
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.core/SecretValue.html#aws_cdk.core.SecretValue
-                                                       authentication=secret_.secrets_manager("ahmedtsecret", json_field="pipelinesecret"),
+                                                       authentication=secret_.secrets_manager("Mytoken", json_field="pipelinesecret"),
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_codepipeline_actions/GitHubTrigger.html#aws_cdk.aws_codepipeline_actions.GitHubTrigger
                                                        trigger=codepipeline_actions_.GitHubTrigger('POLL')
                                                        )
@@ -28,12 +28,12 @@ class AppPipelineStack(Stack):
         # Add shell step to synthesized the code
         synth = pipelines_.ShellStep("Synth", input=source,
                                      
-                                     commands=['cd AWS_CI_CD/Automate_WebApp_HealthCheck/',
+                                     commands=['cd AWS_CI_CD/CrudOperation_WebApp_HealthCheck/',
                                                'npm install -g aws-cdk',
                                                "pip install -r requirements.txt",
                                                'cdk synth'
                                                ],
-                                     primary_output_directory="AWS_CI_CD/Automate_WebApp_HealthCheck/cdk.out",
+                                     primary_output_directory="AWS_CI_CD/CrudOperation_WebApp_HealthCheck/cdk.out",
                                      
                                      )
         # create pipeline
@@ -51,7 +51,7 @@ class AppPipelineStack(Stack):
         # adding beta testing stage to pipeline
         pipeline.add_stage(beta_testing_stage, pre =[
                                 pipelines_.ShellStep("Synth", input=source, 
-                                commands=[  'cd AWS_CI_CD/Automate_WebApp_HealthCheck/',
+                                commands=[  'cd AWS_CI_CD/CrudOperation_WebApp_HealthCheck/',
                                             'npm install -g aws-cdk',
                                             "pip install -r requirements.txt",
                                             "pip install -r requirements-dev.txt",
