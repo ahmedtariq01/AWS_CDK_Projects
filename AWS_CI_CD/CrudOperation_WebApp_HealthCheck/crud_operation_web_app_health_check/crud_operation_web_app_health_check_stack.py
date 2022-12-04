@@ -156,7 +156,8 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         
         
         # Calling the API DynamoDB table
-        API_table = self.Api_DynamoDB_table()
+        API_table = dynamodb_.Table(self, "APITable",
+        partition_key=dynamodb_.Attribute(name="id", type=dynamodb_.AttributeType.STRING))
         API_table.grant_full_access(apifn)
         apifn.add_environment("ApITable", API_table.table_name)
         
@@ -211,7 +212,6 @@ class CrudOperationWebAppHealthCheckStack(Stack):
                 iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonDynamoDBFullAccess"),
-                iam_.ManagedPolicy.from_aws_managed_policy_name("APIGatewayFullAccess"),
               
             ]
         )
@@ -224,16 +224,7 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         sort_key=dynamodb_.Attribute(name="timestamp", type=dynamodb_.AttributeType.STRING),
         removal_policy=RemovalPolicy.DESTROY
         )
-        return table
-    
-    #  creating a DynamoDB table for API Gateway
-    def Api_DynamoDB_table(self):
-        table = dynamodb_.Table(self, "APITable",
-        partition_key=dynamodb_.Attribute(name="id", type=dynamodb_.AttributeType.STRING),
-        removal_policy=RemovalPolicy.DESTROY,
-        sort_key=dynamodb_.Attribute(name="timestamp", type=dynamodb_.AttributeType.STRING),
-        )
-        return table
+        return table   
 
         
 
