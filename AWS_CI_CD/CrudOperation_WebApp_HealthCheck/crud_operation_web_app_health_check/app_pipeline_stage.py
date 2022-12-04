@@ -5,7 +5,6 @@ from aws_cdk import (
 from crud_operation_web_app_health_check.crud_operation_web_app_health_check_stack import CrudOperationWebAppHealthCheckStack
 
 from constructs import Construct
-from src import constants as const
 
 
 class AppPipelineStage(Stage):
