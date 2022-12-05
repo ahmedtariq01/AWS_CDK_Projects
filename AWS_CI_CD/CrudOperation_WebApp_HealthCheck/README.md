@@ -4,6 +4,23 @@
 This project demonstrates a CDK app with an instance of a stack (`web_health_check_stack`). This project creates a Lambda Function that checks the `availability` and `latency` of the websites. The lambda function after obtaining the metrics publishes them on CloudWatch. Also, convert the lambda function into a cron job on 60 min intervals. The `boto3` will be used to create the metrics on CloudWatch. Then alarms are created on those metrics. If latency or availability exceeds the thresholds then alarms will be raised. For that, alarms will be linked with `AWS SNS`. If alarms are raised then an email will be sent to the developer. One more lambda function will be created that will create a table in `DynamoDb` and write the alarms in the table. This data will be used for analytics work.
 For the `Automation of WebApp HealthCheck` a multi-stage pipeline having Beta and Prod stage using CDK is created. The project code is deployed in 1 Region. `Beta` stage must have bakeTimes, code-review, and test blockers. `Unit tests` are written for the web crawler. The CloudWatch metrics and alarms are emitted for the operational health of the web crawler, including `duration` and `invocations` to process each crawler run. `Automate rollback` to the last build if metrics are in alarm. 
 
+## Architecture Diagram:
+
+### WebApp HealthCheck Architecture Diagram
+<div align="center">
+   <div align="center">
+    <img src="Architecture_Diagram/WebApp_HealthCheck_App.jpg" width='700'/>
+  </div>
+</div>
+</br>
+
+### Automation of WebApp HealthCheck Architecture Diagram
+<div align="center">
+   <div align="center">
+    <img src="Architecture_Diagram/Automate_WebApp_HealthCheck.jpg" width='700'/>
+  </div>
+</div>
+</br>
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
