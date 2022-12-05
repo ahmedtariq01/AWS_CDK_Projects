@@ -6,13 +6,21 @@ For the `Automation of WebApp HealthCheck` a multi-stage pipeline having Beta an
 
 ## Architecture Diagram:
 
+### WebApp HealthCheck Architecture Diagram
+<div align="center">
+   <div align="center">
+    <img src="Architecture_Diagram/WebApp_HealthCheck_App.jpg" width='700'/>
+  </div>
+</div>
+</br>
+
+### Automation of WebApp HealthCheck Architecture Diagram
 <div align="center">
    <div align="center">
     <img src="Architecture_Diagram/Automate_WebApp_HealthCheck.jpg" width='700'/>
   </div>
 </div>
 </br>
-
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
