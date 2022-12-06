@@ -178,19 +178,20 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         # https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_apigateway/Resource.html
         # https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_apigateway/IResource.html#aws_cdk.aws_apigateway
         # path to resource
-        items = api.root.add_resource("items")
+        api_method = api.root.add_resource("items")
         
         # POST: (Create) /items        
-        items.add_method("POST")
+        api_method.add_method("POST")
         
         # GET: (Read) /items
-        items.add_method("GET")
+        api_method.add_method("GET")
         
         # DELETE: /items
-        items.add_method("DELETE")
+        api_method.add_method("DELETE")
         
         #PUT: (Update) /items
-        items.add_method("PUT")
+        api_method.add_method("PATCH")
+        
 
         
                                    

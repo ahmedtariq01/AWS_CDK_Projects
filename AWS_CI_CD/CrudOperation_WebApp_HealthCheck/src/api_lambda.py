@@ -2,24 +2,30 @@ import json
 import os
 import boto3
 
-client = boto3.resource('dynamodb', region_name='us-east-2')
-db_table = os.environ['APITable']
-table = client.Table(db_table)
+# https://dynobase.dev/dynamodb-python-with-boto3/#list-tables
+db = boto3.resource('dynamodb', region_name='us-east-2')
+        
+#https://www.geeksforgeeks.org/python-os-getenv-method/
+# Get key value of the table
+dbnameTable=os.getenv("APITable")
+table=db.Table(dbnameTable)
 
 URL=[]
-
-# Calling functions based on httpmethod and url path
 def lambda_handler(event, context):
+    # Get the method
     httpmethod=event["httpMethod"]
+    # Get the url
     url=event["body"]
-    
-    # adding url to the table
-    if httpmethod=="PUT":
+
+    # Perform CRUD operation if method matches
+    # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/dynamodb.html?highlight=dynamodb
+    if httpmethod=="POST":
         response = table.put_item(
                             Item={ 
                                 "url":url
                             }
                         )
+        # Return these lines to be shown in API when doing CRUD operation
         return {
             'statusCode': 200,
             'headers': {
@@ -28,7 +34,7 @@ def lambda_handler(event, context):
             'body': 'URL Added Successfully'
         }
         
-    # read the url from the table
+    
     if httpmethod=="GET":
         response = table.scan()
         data=response["Items"]
@@ -41,18 +47,18 @@ def lambda_handler(event, context):
             },
             'body': URL
         }
-        
-    # update the url from the table
+
+    
     if httpmethod=="PATCH":
-        url = data["id"]
-        url_data = data["url_name"]
-        updateKey = "website"
-        response = table.update_item(
-            Key={"id": url},
-            UpdateExpression="SET %s = :newURL" % updateKey,
-            ExpressionAttributeValues={":newURL": url_data},
-            ExpressionAttributeNames={"#u": "URL"},
-        )
+        response=table.update_item(
+                            Key={
+                                "url":url
+                            },
+                            UpdateExpression='SET url = :url11',
+                            ExpressionAttributeValues={
+                                                    ':url1': url
+                                                    }
+                            )
         return {
             'statusCode': 200,
             'headers': {
@@ -60,24 +66,21 @@ def lambda_handler(event, context):
             },
             'body': 'URL Updated Successfully'
         }
-
-    # delete the url from the table
+    
     if httpmethod=="DELETE":
         response=table.delete_item(
-                            Key={
-                                "url":url
-                                }
-                        )
+                                Key={
+                                    "url":url
+                                    }
+                            )
         return {
             'statusCode': 200,
             'headers': {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             'body': 'URL Deleted Successfully'
         }
-
-
-
-
-
-
+        
+    
+    
+    
