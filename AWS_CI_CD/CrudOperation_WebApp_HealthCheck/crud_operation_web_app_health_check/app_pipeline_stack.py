@@ -56,7 +56,7 @@ class AppPipelineStack(Stack):
                                             "pip install -r requirements.txt",
                                             "pip install -r requirements-dev.txt",
                                             'pytest'],
-                                # primary_output_directory="AWS_CI_CD/Automate_WebApp_HealthCheck/cdk.out",
+                                        # primary_output_directory="AWS_CI_CD/Automate_WebApp_HealthCheck/cdk.out",
                                 )
                             ]
                         )
