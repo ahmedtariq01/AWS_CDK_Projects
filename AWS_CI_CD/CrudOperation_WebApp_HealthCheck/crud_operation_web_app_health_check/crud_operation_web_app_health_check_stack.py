@@ -58,45 +58,7 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         my_topic = sns_.Topic(self, "Health cHeck Notification")
         my_topic.add_subscription(subscriptions_.EmailSubscription("test@example.com"))
         
-        
-        # creating the cloud Watch alarm for the availability metric
-        dimensions = {'URls': str(url) for url in const.urls}
-        
-        avaiilability_metric = cloudwatch_.Metric(
-            metric_name=const.availability_metric,
-            namespace = const.namespace,
-            dimensions_map= dimensions,
-        )
-        avaiilability_alarm =  cloudwatch_.Alarm(self, "Availability_Error",
-            metric=avaiilability_metric,
-            evaluation_periods=60,
-            threshold=1,
-            comparison_operator=cloudwatch_.ComparisonOperator.LESS_THAN_THRESHOLD, 
-        
-        )
-        
-        # adding the SNS action to the alarm
-        avaiilability_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
-        
-        # creating the cloud Watch alarm for the latency metric
-        dimensions = {'URls': str(url) for url in const.urls}
-        
-        latency_metric = cloudwatch_.Metric(
-            metric_name=const.latency_metric,
-            namespace = const.namespace,
-            dimensions_map= dimensions,
-        )
-        latency_alarm =  cloudwatch_.Alarm(self, "Latency_Errors",
-            metric=latency_metric,
-            evaluation_periods=60,
-            threshold=0.5,
-            comparison_operator=cloudwatch_.ComparisonOperator.GREATER_THAN_THRESHOLD, 
-        
-        )
-        
-        # adding the SNS action to the alarm
-        latency_alarm.add_alarm_action(cw_actions_.SnsAction(my_topic))
-        
+
         # code ref: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_lambda/Function.html
         # obtaining metrics from aws
         # obtaining Duration metric
@@ -157,16 +119,21 @@ class CrudOperationWebAppHealthCheckStack(Stack):
         
         # Calling the API DynamoDB table
         API_table = dynamodb_.Table(self, "APITable",
-        partition_key=dynamodb_.Attribute(name="id", type=dynamodb_.AttributeType.STRING))
+        partition_key=dynamodb_.Attribute(name="url", type=dynamodb_.AttributeType.STRING))
         API_table.grant_full_access(apifn)
-        apifn.add_environment("ApITable", API_table.table_name)
+        apifn.add_environment("APITable", API_table.table_name)
+        
+        fn.add_environment("APITable", API_table.table_name)
+        fn.add_environment("snsTopic", my_topic.topic_name)
+        
         
         # invoking the lambda function
         apifn.grant_invoke(iam_.ServicePrincipal("apigateway.amazonaws.com"))
         
         # create REST API Gateway integrated with APILambda
         # https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_apigateway/LambdaRestApi.html
-        api = apigateway_.LambdaRestApi(self, id = "AhmedTariqAPI",
+        api = apigateway_.LambdaRestApi(self, "api",
+                rest_api_name ="URLAPI",                        
                 handler = apifn,
                 proxy=False,
                 endpoint_configuration= apigateway_.EndpointConfiguration(
