@@ -34,7 +34,7 @@ def lambda_handler(event, context):
         URL.append(urls['url'])
     
     # check the availability and latency of the URLs
-    for url in const.urls:
+    for url in URL:
         availability=getAvailability(url)
         latency=getLatency(url)        
         
