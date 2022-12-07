@@ -61,12 +61,3 @@ def test_cloudwatch_metrics(app):
         "MetricName": "URL_AVAILABILITY",
         "MetricName": "URL_LATENCY"
     })
-    
-# functional test to check the lambda handler function name
-# def test_lambda_handler_function():
-#     app = core.App()
-#     stack = AutomateWebAppHealthCheckStack(app, "automate-web-app-health-check")
-#     lambda_handler = stack.lambda_handler
-#     assert lambda_handler is not None
-#     assert lambda_handler.function_name == "web_health_check"
-#   assert lambda_handler.runtime == lambda_.Runtime.PYTHON_3_8
