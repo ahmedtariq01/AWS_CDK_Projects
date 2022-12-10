@@ -39,14 +39,15 @@ def lambda_handler(event, context):
         response = table.scan()
         data=response["Items"]
         for urls in data:
-            URL.append(urls['url'])
+                URL.append(urls['url'])
         return {
-            'statusCode': 200,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': URL
-        }
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json'
+                },
+                'body': json.dumps(URL),
+            }
+      
 
     
     if httpmethod=="PATCH":
