@@ -1,7 +1,8 @@
 
-# Welcome to your CDK Python project!
+# Uploading large Payload on S3 bucket AWS CDk Python Project
 
-This is a blank project for CDK development with Python.
+## Project Description:
+This project uses the `AWS CDK` in Python to create an S3 bucket, an API Gateway REST API with a POST method, and two Lambda functions. The first Lambda function generates a `presigned URL` for the client to use to upload a file to S3, while the second Lambda function sends an `SES notification` to the user once the file has been uploaded. The S3 bucket is configured to trigger the second Lambda function whenever a new object is created. The project can be tested by using the POST method to request a presigned URL and then uploading a file to S3, and can be deployed to AWS once it is complete.
 
 ## Architecture Diagram:
 
