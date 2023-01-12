@@ -41,8 +41,6 @@ class ProcessS3DataAndNotificationAlertsStack(Stack):
         # https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_s3_notifications/README.html
         bucket.add_event_notification(s3_.EventType.OBJECT_CREATED, s3_notifications_.LambdaDestination(fn))
         bucket.grant_read_write(fn)
-        fn.add_environment("bucketName", bucket.bucket_name)
-        fn.grant_invoke(iam_.ServicePrincipal("s3.amazonaws.com"))
     
         
         # DynamoDB table for storing the data
@@ -70,6 +68,7 @@ class ProcessS3DataAndNotificationAlertsStack(Stack):
             managed_policies=[
                 iam_.ManagedPolicy.from_aws_managed_policy_name("CloudWatchFullAccess"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaBasicExecutionRole"),
+                iam_.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaVPCAccessExecutionRole"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonDynamoDBFullAccess"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess"),
                 iam_.ManagedPolicy.from_aws_managed_policy_name("AmazonSNSFullAccess"),                

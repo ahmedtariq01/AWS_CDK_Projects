@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     # retrieves the source S3 bucket name and the key name of the uploaded object 
     # https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html
     bucket = event['Records'][0]['s3']['bucket']['name']
-    key = event['Records'][0]['s3']['object']['key']
+    key = str(event['Records'][0]['s3']['object']['key'])
     
     # getting the object from the bucket
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.get_object
