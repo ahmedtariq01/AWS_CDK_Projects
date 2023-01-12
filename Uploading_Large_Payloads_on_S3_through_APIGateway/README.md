@@ -14,7 +14,7 @@ This project uses the `AWS CDK` in Python to create an S3 bucket, an API Gateway
 </br>
 
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+The `cdk.json` file tell the CDK Toolkit how to execute your app.
 
 This project is set up like a standard Python project.  The initialization
 process also creates a virtualenv within this project, stored under the `.venv`
