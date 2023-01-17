@@ -1,7 +1,7 @@
 
 # Welcome to your CDK Python project!
 ## Project Description:
-This project uses the `AWS CDK` in Python to create an S3 bucket, Lambda functions and SNS notification system. When user upload the files on S3 bucket, S3 event trigger notify Lambda when a new file is uploaded to the bucket.For example, this Lambda function parse the text in each file and count the number of times each word is repeated. Then the function stores the word-count results in a database and send an email to the specified email address with the results of the word-counting process. Test your code by uploading sample files to the S3 bucket and verifying that the word-count results are stored and emailed as expected.
+This project uses the `AWS CDK` in Python to create an S3 bucket, Lambda function, DynamoDB and SNS notification system. When user upload the files on S3 bucket, S3 event trigger notify Lambda when a new file is uploaded to the bucket.For example, this Lambda function parse the text in each file and count the number of times each word is repeated. Then the function stores the word-count results in a database and send an email to the specified email address with the results of the word-counting process. Test your code by uploading sample files to the S3 bucket and verifying that the word-count results are stored and emailed as expected.
 
 ## Architecture Diagram:
 
