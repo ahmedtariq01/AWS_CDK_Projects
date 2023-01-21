@@ -2,7 +2,7 @@
 # AWS CDK Pyhton Application Notifications System Project
 
 ## Project Description
-<p align="justify">This project uses the AWS CDK in Python to create a notification system for an application. The notification system includes `AWS Systems Manager` to monitor the status and performance of the applications by collecting and analyzing operational data and `AWS CloudWatch` to monitor the operations of the application. A `Corn Job` will be run after every specific time period and collect the status and logs of the application. The lambda function is created to send that reports to the Admins about performance and operations of the application and client about operations within the system, and notifies clients about any changes. The Client and Admin will receive the notification through`AWS SES` email service.</p>
+<style align="justify">This project uses the AWS CDK in Python to create a notification system for an application. The notification system includes `AWS Systems Manager` to monitor the status and performance of the applications by collecting and analyzing operational data and `AWS CloudWatch` to monitor the operations of the application. A `Corn Job` will be run after every specific time period and collect the status and logs of the application. The lambda function is created to send that reports to the Admins about performance and operations of the application and client about operations within the system, and notifies clients about any changes. The Client and Admin will receive the notification through`AWS SES` email service.</style>
 
 ## Architecture Diagram:
 
