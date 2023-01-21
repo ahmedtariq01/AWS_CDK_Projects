@@ -8,7 +8,7 @@
 
 <div align="center">
    <div align="center">
-    <img src="Architecture_Diagram/NotificationSystem.jpg" width='700'/>
+    <img src="Architecture_Diagram/Notification_System.jpg" width='700'/>
   </div>
 </div>
 </br>
