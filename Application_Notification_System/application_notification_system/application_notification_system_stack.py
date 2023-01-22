@@ -3,6 +3,8 @@ from aws_cdk import (
     RemovalPolicy,
     Duration,
     Stack,
+    aws_events as events_,
+    aws_events_targets as targets_,
     aws_iam as iam_,
     
 )
@@ -20,9 +22,22 @@ class ApplicationNotificationSystemStack(Stack):
         fn = self.create_lambda('NotificationSystem','./src','app_notification.lambda_handler',lambda_role)
         fn.apply_removal_policy(RemovalPolicy.DESTROY)
         
+        # create a rule to trigger the lambda function every 60 minutes
+        schedule=events_.Schedule.rate(Duration.minutes(60))
         
+        # defines the target function
+        targets=targets_.LambdaFunction(handler=fn)
         
+        # corn job rule to trigger the lambda function
+        rule = events_.Rule(self, "NotificationRule",
+            schedule = schedule,
+            targets = [targets]
+        )
         
+        # destroy the rule when the stack is destroyed
+        rule.apply_removal_policy(RemovalPolicy.DESTROY)
+ 
+   
         
     # creating a lambda function
     def create_lambda(self, id, asset, handler, role):
