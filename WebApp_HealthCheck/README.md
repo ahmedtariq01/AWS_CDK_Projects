@@ -91,3 +91,19 @@ command.
  - AWS DynmoDB create table: https://docs.aws.amazon.com/cdk/api/v1/python/aws_cdk.aws_dynamodb/Table.html
  - Boto3 DynamoDB: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
  - Boto3 DynamoDB create table: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.create_table
+
+
+
+## Connect with Me 🤝🏻 &nbsp;
+
+<h3 align="center">
+<a href="https://linkedin.com/in/ahmedtariq01"><img src="https://img.shields.io/badge/-Ahmed%20Tariq-0077B5?style=for-the-badge&logo=Linkedin&logoColor=white"/></a>
+<a href="https://twitter.com/imahmedt" target="_blank"><img src="https://img.shields.io/badge/-@imahmedt-1877F2?style=for-the-badge&logo=twitter&logoColor=white"/></a>
+
+
+## Support Me 💰
+
+<h3 align="justify">If you like my work, you can buy me a coffee ☕. It will help me to keep creating more content.</h3>
+<h3 align="center">
+<a href="https://www.buymeacoffee.com/ahmedtariq" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+</h3>
